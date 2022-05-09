@@ -11,9 +11,10 @@ const refs = {
 };
 
 let today = new Date();
-let selectedDate;
-let startCount = false;
-let deltaTime;
+let selectedDate = null;
+let deltaTime = null;
+let startCount = true;
+let intervalId = null;
 
 const options = {
   enableTime: true,
@@ -22,26 +23,30 @@ const options = {
   minuteIncrement: 1,
   onClose(selectedDates) {
     if (selectedDates[0] - today < 0) {
-      if (selectedDate !== undefined) {
+      if (startCount === false) {
         window.alert('Nice try, but no!!! You can change data after restart!');
         return;
       }
+
       window.alert('Please choose a date in the future');
+      refs.button.setAttribute('disabled', '');
+      renderTimer();
       return;
     }
 
-    if (selectedDate !== undefined) {
+    if (startCount === false) {
       window.alert('Nice try, but no!!! You can change data after restart!');
       return;
     }
 
     selectedDate = selectedDates[0];
     deltaTime = selectedDate - today;
-    deltaTime > 0 ? (startCount = true) : (startCount = false);
+
     isValidBtn();
+    timer();
   },
 };
-const flatpickrDate = flatpickr('#datetime-picker', options);
+let flatpickrDate = flatpickr('#datetime-picker', options);
 
 // ============= Check btn =================
 
@@ -56,17 +61,36 @@ function isValidBtn() {
 refs.button.addEventListener('click', onClick);
 
 function onClick() {
-  setInterval(() => {
-    today = new Date();
-    deltaTime = selectedDate - today;
-    const timeComponents = getTimeComponents(deltaTime);
-    refs.days.textContent = timeComponents.days;
-    refs.hours.textContent = timeComponents.hours;
-    refs.minutes.textContent = timeComponents.minutes;
-    refs.seconds.textContent = timeComponents.seconds;
-  }, 1000);
-
+  intervalId = setInterval(timer, 1000);
+  startCount = false;
   refs.button.setAttribute('disabled', '');
+  refs.input.classList.add('hidden');
+  refs.button.classList.add('hidden');
+}
+
+function timer() {
+  today = new Date();
+  deltaTime = selectedDate - today;
+  const { days, hours, minutes, seconds } = getTimeComponents(deltaTime);
+  renderTimer(days, hours, minutes, seconds);
+
+  if (days === '00' && hours === '00' && minutes === '00' && seconds === '00') {
+    clearInterval(intervalId);
+    intervalId = null;
+    startCount = true;
+    renderTimer();
+    window.alert('You can choose anoter date!');
+    refs.input.classList.remove('hidden');
+    refs.button.classList.remove('hidden');
+    return;
+  }
+}
+
+function renderTimer(days = '00', hours = '00', minutes = '00', seconds = '00') {
+  refs.days.textContent = days;
+  refs.hours.textContent = hours;
+  refs.minutes.textContent = minutes;
+  refs.seconds.textContent = seconds;
 }
 
 function getTimeComponents(time) {
