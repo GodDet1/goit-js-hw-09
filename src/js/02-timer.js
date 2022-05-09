@@ -1,5 +1,7 @@
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
+import 'notiflix/dist/notiflix-aio-3.2.5.min.js';
 
 const refs = {
   input: document.querySelector('#datetime-picker'),
@@ -24,18 +26,19 @@ const options = {
   onClose(selectedDates) {
     if (selectedDates[0] - today < 0) {
       if (startCount === false) {
-        window.alert('Nice try, but no!!! You can change data after restart!');
+        Notify.failure('Nice try, but no!!! You can change data after restart!');
         return;
       }
 
-      window.alert('Please choose a date in the future');
+      Notify.failure('Please choose a date in the future');
+
       refs.button.setAttribute('disabled', '');
       renderTimer();
       return;
     }
 
     if (startCount === false) {
-      window.alert('Nice try, but no!!! You can change data after restart!');
+      Notify.failure('Nice try, but no!!! You can change data after restart!');
       return;
     }
 
@@ -46,7 +49,8 @@ const options = {
     timer();
   },
 };
-let flatpickrDate = flatpickr('#datetime-picker', options);
+
+flatpickr('#datetime-picker', options);
 
 // ============= Check btn =================
 
@@ -66,6 +70,8 @@ function onClick() {
   refs.button.setAttribute('disabled', '');
   refs.input.classList.add('hidden');
   refs.button.classList.add('hidden');
+
+  Notify.success('If you want reload timer, just restart page');
 }
 
 function timer() {
@@ -79,7 +85,7 @@ function timer() {
     intervalId = null;
     startCount = true;
     renderTimer();
-    window.alert('You can choose anoter date!');
+    Notify.info('You can choose anoter date!');
     refs.input.classList.remove('hidden');
     refs.button.classList.remove('hidden');
     return;
@@ -94,13 +100,13 @@ function renderTimer(days = '00', hours = '00', minutes = '00', seconds = '00') 
 }
 
 function getTimeComponents(time) {
-  const seconds = pad(Math.floor((time / 1000) % 60));
-  const minutes = pad(Math.floor((time / (1000 * 60)) % 60));
-  const hours = pad(Math.floor((time / (1000 * 60 * 60)) % 24));
-  const days = pad(Math.floor(time / (1000 * 60 * 60 * 24)));
+  const seconds = addLeadingZero(Math.floor((time / 1000) % 60));
+  const minutes = addLeadingZero(Math.floor((time / (1000 * 60)) % 60));
+  const hours = addLeadingZero(Math.floor((time / (1000 * 60 * 60)) % 24));
+  const days = addLeadingZero(Math.floor(time / (1000 * 60 * 60 * 24)));
   return { days, hours, minutes, seconds };
 }
 
-function pad(value) {
+function addLeadingZero(value) {
   return String(value).padStart(2, '0');
 }
