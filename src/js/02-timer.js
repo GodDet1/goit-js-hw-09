@@ -99,11 +99,11 @@ function renderTimer(days = '00', hours = '00', minutes = '00', seconds = '00') 
   refs.seconds.textContent = seconds;
 }
 
-function getTimeComponents(time) {
-  const seconds = addLeadingZero(Math.floor((time / 1000) % 60));
-  const minutes = addLeadingZero(Math.floor((time / (1000 * 60)) % 60));
-  const hours = addLeadingZero(Math.floor((time / (1000 * 60 * 60)) % 24));
-  const days = addLeadingZero(Math.floor(time / (1000 * 60 * 60 * 24)));
+function getTimeComponents(ms) {
+  const seconds = addLeadingZero(Math.floor((ms / 1000) % 60));
+  const minutes = addLeadingZero(Math.floor((ms / (1000 * 60)) % 60));
+  const hours = addLeadingZero(Math.floor((ms / (1000 * 60 * 60)) % 24));
+  const days = addLeadingZero(Math.floor(ms / (1000 * 60 * 60 * 24)));
   return { days, hours, minutes, seconds };
 }
 
