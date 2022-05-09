@@ -3,8 +3,8 @@
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-    Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell,
+    'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #fafafa;
@@ -15,4 +15,68 @@ body {
 img {
   display: block;
   max-width: 100%;
+}
+
+.first-task-buttons {
+  position: relative;
+  left: 50%;
+  transform: translate(-100%);
+
+  padding: 20px 40px;
+
+  color: rgba(0, 0, 0, 0.7);
+  font-weight: 800;
+  font-size: 50px;
+
+  border: none;
+  border-radius: 20px;
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.6), 5px 5px 5px rgba(0, 0, 0, 0.3),
+    5px 5px 5px rgba(0, 0, 0, 0.2);
+}
+
+.first-task-buttons[data-start] {
+  margin-right: 20px;
+  margin-bottom: 10px;
+}
+
+.timer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.field:not(last-child) {
+  margin-right: 20px;
+}
+
+.value {
+  color: red;
+  font-size: 40px;
+}
+
+.label {
+  color: brown;
+}
+
+.btn-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-start {
+  display: block;
+  padding: 10px 20px;
+  margin-left: 20px;
+  border-radius: 10px;
+  border: none;
+
+  background-color: aquamarine;
+
+  font-size: 40px;
+}
+
+.btn-start:disabled {
+  background-color: red;
+  color: aqua;
 }
