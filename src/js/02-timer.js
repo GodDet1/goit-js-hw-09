@@ -67,6 +67,7 @@ refs.button.addEventListener('click', onClick);
 function onClick() {
   intervalId = setInterval(timer, 1000);
   startCount = false;
+
   refs.button.setAttribute('disabled', '');
   refs.input.classList.add('hidden');
   refs.button.classList.add('hidden');
